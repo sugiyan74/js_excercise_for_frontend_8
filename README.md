@@ -1,10 +1,10 @@
 # レポジトリ内容
 
-このレポジトリは[Web白熱教室](https://tsuyopon.xyz/)の[JavaScriptの学習コンテンツ > JavaScriptフロントエンド編](https://tsuyopon.xyz/learning-contents/web-dev/javascript/frontend/)にある「[【エクササイズ】fetchで取得したクイズデータを一覧表示する【JavaScript】](https://tsuyopon.xyz/learning-contents/web-dev/javascript/frontend/js-excercise-for-frontend-7/)」で利用するものです。
+このレポジトリは[Web白熱教室](https://tsuyopon.xyz/)の[JavaScriptの学習コンテンツ > JavaScriptフロントエンド編](https://tsuyopon.xyz/learning-contents/web-dev/javascript/frontend/)にある「[【エクササイズ】Fetch APIを使ってクイズアプリを作る](https://tsuyopon.xyz/learning-contents/web-dev/javascript/frontend/js-excercise-for-frontend-8/)」で利用するものです。
 
 ### 完成形(表示内容はリロードする度に変わる)
 
-![完成形](./images/assignment.png)
+![完成形](./images/assignment.gif)
 
 
 ## 課題
@@ -18,7 +18,8 @@
 
 ## 答え
 
-- 答えは `answer.html`, `answer.js` の中身になります。参考記事を読んでもわからなくなった場合は、答えの実装を見て、コードの流れを理解してからまたチャレンジしてみてください。(コピペ厳禁)
+- 答えは `answer.html`, `answer.js`, `answer.css` の中身になります。参考記事を読んでもわからなくなった場合は、答えの実装を見て、コードの流れを理解してからまたチャレンジしてみてください。(コピペ厳禁)
+  - `answer.html`, `answer.js`, `answer.css` はあくまでも解答の一例のため、参考する実装例の1つとして認識する。
 
 ## 参考記事
 
@@ -29,3 +30,4 @@
   - [【JavaScript】fetchを使って外部データを取得する](https://tsuyopon.xyz/learning-contents/web-dev/javascript/frontend/how-to-use-the-fetch-api-in-js/)
   - [JavaScriptで新規作成したDOMを別のDOMに追加する](https://tsuyopon.xyz/learning-contents/web-dev/javascript/frontend/how-to-create-an-dom-and-append-child/)
   - [【JavaScript】DOMのテキスト内容を取得・変更する](https://tsuyopon.xyz/learning-contents/web-dev/javascript/frontend/how-to-manipulate-text-in-dom/)
+  - [【学習コンテンツ】CSS](https://tsuyopon.xyz/learning-contents/web-dev/css/)
