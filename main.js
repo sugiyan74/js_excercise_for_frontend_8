@@ -150,12 +150,12 @@
         const unescapedCorrectAnswer = quiz.correct_answer;
         // 正解
         if(event.target.innerText === unescapedCorrectAnswer) {
-          gameState.numberOfCorrects ++;
+          gameState.numberOfCorrects++;
           alert('Correct answer!!');
         } else {
-          alert('Wrong answer... The correct answer is ' + quiz.correct_answer);
+          alert('Wrong answer... The correct answer is ' + unescapedCorrectAnswer);
         }
-        gameState.currentIndex ++;
+        gameState.currentIndex++;
         setNextQuiz();
       });
     });
