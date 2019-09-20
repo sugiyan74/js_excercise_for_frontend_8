@@ -13,17 +13,29 @@
   //   - quizzes : fetchで取得したクイズデータの配列(resutls)を保持する
   //   - currentIndex : 現在何問目のクイズに取り組んでいるのかをインデックス番号で保持する
   //   - numberOfCorrects : 正答数を保持するう
-
+  const gameState = {
+    quizzes : [],
+    currentIndex : 0,
+    numberOfCorrects : 0
+  };
 
   // HTMLのid値がセットされているDOMを取得する
+  const questionElement = document.getElementById('question');
+  const answersElement = document.getElementById('answers');
+  const resultElement = document.getElementById('result');
+  const restartButton = document.getElementById('restart-button');
 
 
   // ページの読み込みが完了したらクイズ情報を取得する
+  window.addEventListener('load', (event)=> {
+    fetchQuizData();
+  });
 
 
   // 「Restart」ボタンをクリックしたら再度クイズデータを取得する
-
-
+  restartButton.addEventListener('click', (event) => {
+    fetchQuizData();
+  });
 
   // `fetchQuizData関数`を実装する
   // - 実現したいこと
@@ -43,6 +55,22 @@
   // - 戻り値
   //   - 無し
 
+  const fetchQuizData = () => {
+    questionElement.innerText = 'Now loading...';
+    resultElement.innerHTML = '';
+    restartButton.style.display = 'none';
+    fetch(API_URL)
+      .then(result => {
+        return result.json();
+      })
+      .then(json => {
+        gameState.quizzes = json.results;
+        // デフォルト設定
+        gameState.currentIndex = 0;
+        gameState.numberOfCorrects = 0;
+        setNextQuiz();
+      });
+  }
 
   // setNextQuiz関数を実装する
   // - 実現したいこと
@@ -56,7 +84,16 @@
   //   - 無し
   // - 戻り値
   //   - 無し
-
+  const setNextQuiz = () => {
+    questionElement.innerHTML = '';
+    removeAllAnswers();
+    if(gameState.currentIndex < gameState.quizzes.length) {
+      const quiz = gameState.quizzes[gameState.currentIndex];
+      makeQuiz(quiz);
+    } else {
+      finishQuiz();
+    }
+  };
 
   // finishQuiz関数を実装する
   // - 実現したいこと
@@ -66,6 +103,10 @@
   //   - 無し
   // - 戻り値
   //   - 無し
+  const finishQuiz = () => {
+    resultElement.innerText = gameState.numberOfCorrects + '/' + gameState.quizzes.length;
+    restartButton.style.display = 'inline-block';
+  };
 
 
   // removeAllAnswers関数を実装する
@@ -75,7 +116,11 @@
   //   - 無し
   // - 戻り値
   //   - 無し
-
+  const removeAllAnswers = () => {
+    while(answersElement.firstChild) {
+      answersElement.removeChild(answersElement.firstChild);
+    }
+  };
 
   // makeQuiz関数を実装する
   // - 実現したいこと
@@ -92,11 +137,42 @@
   //   - オブジェクト(クイズデータ1件)
   // - 戻り値無し
   //   - 無し
+  const makeQuiz = (quiz) => {
+    const answers = concatAnswers(quiz);
+    questionElement.innerText = unescapeHTML(quiz.question);
+
+    answers.forEach((answer) => {
+      const liElement = document.createElement('li');
+      liElement.innerText = unescapeHTML(answer);
+      answersElement.appendChild(liElement);
+
+      liElement.addEventListener('click', (event) => {
+        const unescapedCorrectAnswer = quiz.correct_answer;
+        // 正解
+        if(event.target.innerText === unescapedCorrectAnswer) {
+          gameState.numberOfCorrects++;
+          alert('Correct answer!!');
+        } else {
+          alert('Wrong answer... The correct answer is ' + unescapedCorrectAnswer);
+        }
+        gameState.currentIndex++;
+        setNextQuiz();
+      });
+    });
 
 
+  }
+  
   // quizオブジェクトの中にあるcorrect_answer, incorrect_answersを結合して
   // 正解・不正解の解答をシャッフルする。
-
+  const concatAnswers = (quiz) => {
+    const resultAnswers = [
+      quiz.correct_answer,
+      ...quiz.incorrect_answers
+    ];
+    const shuffledAnswers = shuffle(resultAnswers);
+    return shuffledAnswers;
+  };
 
   // `shuffle関数` を実装する
   // - 実現したいこと
@@ -108,7 +184,14 @@
   //   - array : 配列
   // - 戻り値
   //   - shffuledArray : シャッフル後の配列(引数の配列とは別の配列であることに注意する)
-
+  const shuffle = (array) => {
+    const copiedArray = array.slice();
+    for(let i = array.length - 1; i >= 0; i--) {
+      const rand = Math.floor( Math.random() * ( i + 1 ) );
+      [copiedArray[i], copiedArray[rand]] = [copiedArray[rand], copiedArray[i]]
+    }
+    return copiedArray;
+  };
 
 
   // unescapeHTML関数を実装する
@@ -120,5 +203,15 @@
   //   - 文字列
   // - 戻り値
   //   - 文字列
+  const unescapeHTML = (str) => {
+    const div = document.createElement("div");
+    div.innerHTML = str.replace(/</g,"&lt;")
+                       .replace(/>/g,"&gt;")
+                       .replace(/ /g, "&nbsp;")
+                       .replace(/\r/g, "&#13;")
+                       .replace(/\n/g, "&#10;");
+
+    return div.textContent || div.innerText;
+  };
 
 })();
