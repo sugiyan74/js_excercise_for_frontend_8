@@ -166,8 +166,10 @@
   // quizオブジェクトの中にあるcorrect_answer, incorrect_answersを結合して
   // 正解・不正解の解答をシャッフルする。
   const concatAnswers = (quiz) => {
-    const correctAnswerArray = [quiz.correct_answer];
-    const resultAnswers = correctAnswerArray.concat(quiz.incorrect_answers);
+    const resultAnswers = [
+      quiz.correct_answer,
+      ...quiz.incorrect_answers
+    ];
     const shuffledAnswers = shuffle(resultAnswers);
     return shuffledAnswers;
   };
@@ -202,7 +204,7 @@
   // - 戻り値
   //   - 文字列
   const unescapeHTML = (str) => {
-    var div = document.createElement("div");
+    const div = document.createElement("div");
     div.innerHTML = str.replace(/</g,"&lt;")
                        .replace(/>/g,"&gt;")
                        .replace(/ /g, "&nbsp;")
